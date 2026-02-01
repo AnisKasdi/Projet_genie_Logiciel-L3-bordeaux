@@ -31,19 +31,35 @@ public class ImageDao implements Dao<Image> {
 
   @Override
   public Optional<Image> retrieve(final long id) {
-    // TODO
-    return Optional.empty();
+    // Ici on utilise la méthode ofNullable de Optional pour retourner un Optional
+    // contenant la valeur de la map pour la clé id si elle existe, sinon null
+    return Optional.ofNullable(images.get(id));
   }
 
   @Override
   public List<Image> retrieveAll() {
-    // TODO
-    return new ArrayList<Image>();
+    // Ici ma première idée était de récuperer la valeur de la dernière clé en suite
+    // faire une boucle
+    // qui parcourerais tout les éléments de la map et ajouterait les valeurs dans
+    // une liste via la fonction en haut
+    // retrieve pour chaque élément. mais un socusi de performances s'impose surtout
+    // si des vide existent au milieu ( suite a des supression)
+    // on a donc utilisé la fonction image.values qui va nous donner une collection
+    // de toutes les valeurs de la map
+    // ensuite on a converti cette collection en une liste via le constructeur de
+    // ArrayList
+    return new ArrayList<Image>(images.values());
   }
 
   @Override
   public void create(final Image img) {
-    // TODO
+    // Ici pour ajouter une image a notre map, on va d'abord vérifier qu'elle n'est
+    // pas null en suite
+    // utiliser la fonction image.put pour ajouter l'image a la map
+    // avec l'id de l'image en clé et l'image en valeur
+    if (img != null) {
+      images.put(img.getId(), img);
+    }
   }
 
   @Override
@@ -53,6 +69,13 @@ public class ImageDao implements Dao<Image> {
 
   @Override
   public void delete(final Image img) {
-    // TODO
+    // Ici pour supprimer une image de notre map, on va d'abord vérifier qu'elle
+    // n'est pas null en suite
+    // utiliser la fonction image.remove pour supprimer l'image de la map
+    // avec l'id de l'image en clé
+    if (img != null) {
+      images.remove(img.getId());
+    }
   }
+
 }
